@@ -22,36 +22,44 @@ const CreateProduct = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!form.name || !form.price || !form.stock || !form.category) {
-      toast.error('Name, Price, Stock, and Category are required.');
-      return;
-    }
+  e.preventDefault();
 
-    try {
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
-      });
+  if (!form.name || !form.price || !form.stock || !form.category) {
+    toast.error('Name, Price, Stock, and Category are required.');
+    return;
+  }
 
-      await API.post('/products', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+  try {
+    const formData = new FormData();
+    formData.append('name', form.name);
+    formData.append('price', Number(form.price));
+    formData.append('description', form.description);
+    formData.append('stock', Number(form.stock));
+    formData.append('category', form.category);
+    if (form.image) formData.append('image', form.image);
 
-      toast.success('Product created successfully!');
-      setForm({
-        name: '',
-        price: '',
-        description: '',
-        stock: '',
-        category: '',
-        image: null,
-      });
-    } catch (err) {
-      toast.error('Something went wrong while adding the product.');
-      console.error(err);
-    }
-  };
+    await API.post('/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${adminToken}`, // <-- add your admin token here
+      },
+    });
+
+    toast.success('Product created successfully!');
+    setForm({
+      name: '',
+      price: '',
+      description: '',
+      stock: '',
+      category: '',
+      image: null,
+    });
+  } catch (err) {
+    toast.error('Something went wrong while adding the product.');
+    console.error('Frontend submit error:', err.response?.data || err);
+  }
+};
+
 
   return (
     <section className="min-h-screen flex items-stretch text-white">
