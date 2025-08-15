@@ -30,7 +30,7 @@ const CreateProduct = () => {
   }
 
   try {
-    const token = localStorage.getItem('tooken'); // ✅ get admin token
+    const token = localStorage.getItem('token'); // ✅ get admin token
     if (!token) {
       toast.error('You must be logged in as admin.');
       return;
