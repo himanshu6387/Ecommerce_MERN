@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import API from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ export default function Signup() {
   const handleSignup = async () => {
     try {
       await API.post('/auth/signup', form);
-      alert('Signup successful! Please login.');
-      navigate('/');
+      toast.success('Signup successful! Please login.');
+      navigate('/login');
     } catch (err) {
       alert(err.response?.data?.message || 'Signup failed');
     }

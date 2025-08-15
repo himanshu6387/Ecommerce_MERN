@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
 
-    const {setSearch} = useContext(AuthContext)
+    const { setSearch, user } = useContext(AuthContext)
 
     return (
         <>
@@ -35,7 +35,7 @@ const Home = () => {
                                 type="text"
                                 placeholder="Search products..."
                                 className="flex-grow px-5 py-3 outline-none"
-                                onChange={(e)=>setSearch(e.target.value)}
+                                onChange={(e) => setSearch(e.target.value)}
                             />
                             <button className="bg-blue-600 text-white px-5 flex items-center justify-center">
                                 <FaSearch />
@@ -57,25 +57,32 @@ const Home = () => {
                     </div>
 
                     {/* Login Buttons */}
-                    <div className="flex justify-center gap-4">
-                        <Link
-                            to="/login"
-                            className="px-6 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50"
-                        >
-                            Login as Customer
-                        </Link>
-                        <Link
-                            to="/login"
-                            className="px-6 py-2 border border-green-600 text-green-600 rounded-full hover:bg-green-50"
-                        >
-                            Login as Seller
-                        </Link>
-                    </div>
+                    {
+                        !user ?
+                            <>
+                                <div className="flex justify-center gap-4">
+                                    <Link
+                                        to="/login"
+                                        className="px-6 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50"
+                                    >
+                                        Login as Customer
+                                    </Link>
+                                    <Link
+                                        to="/login"
+                                        className="px-6 py-2 border border-green-600 text-green-600 rounded-full hover:bg-green-50"
+                                    >
+                                        Login as Seller
+                                    </Link>
+                                </div>
+                            </> :
+                            <>
+                            </>
+                    }
                 </div>
             </section>
 
             {/* Card Section Dynamically */}
-            <UserDashboard/>
+            <UserDashboard />
 
             {/* Why Us Section */}
             <main className="mt-12">
@@ -129,7 +136,7 @@ const Home = () => {
                     </section>
                 </div>
             </main>
-            <Footer/>
+            <Footer />
         </>
     );
 };
