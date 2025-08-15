@@ -30,6 +30,12 @@ const CreateProduct = () => {
   }
 
   try {
+    const token = localStorage.getItem('adminToken'); // ✅ get admin token
+    if (!token) {
+      toast.error('You must be logged in as admin.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', form.name);
     formData.append('price', Number(form.price));
@@ -41,7 +47,7 @@ const CreateProduct = () => {
     await API.post('/products', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${adminToken}`, // <-- add your admin token here
+        Authorization: `Bearer ${token}`, // send token
       },
     });
 
