@@ -6,17 +6,23 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function UserDashboard() {
   const [products, setProducts] = useState([]);
-  const [selectedSizes, setSelectedSizes] = useState({}); // { productId: "M" }
+  const [selectedSizes, setSelectedSizes] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false); // NEW: For mobile sidebar toggle
   const navigate = useNavigate();
   const { search } = useContext(AuthContext);
 
   useEffect(() => {
-    API.get("/products").then((res) => setProducts(res.data.products));
+    API.get("/products").then((res) => setProducts(res.data.products || []));
   }, []);
 
-  const filteredData = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredData = products.filter((p) => {
+    const matchesSearch = p.name?.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = selectedCategory
+      ? p.category?.toLowerCase() === selectedCategory.toLowerCase()
+      : true;
+    return matchesSearch && matchesCategory;
+  });
 
   const handleSizeSelect = (productId, size) => {
     setSelectedSizes((prev) => ({ ...prev, [productId]: size }));
@@ -35,10 +41,11 @@ export default function UserDashboard() {
       await API.post("/cart", {
         productId: product._id,
         quantity: 1,
-        size: selectedSizes[product._id] || null, // send size if selected
+        size: selectedSizes[product._id] || null,
       });
       toast.success(
-        `Added to cart ${selectedSizes[product._id] ? `(${selectedSizes[product._id]})` : ""}`
+        `Added to cart ${selectedSizes[product._id] ? `(${selectedSizes[product._id]})` : ""
+        }`
       );
       navigate("/cart");
     } catch (err) {
@@ -48,99 +55,181 @@ export default function UserDashboard() {
   };
 
   return (
-    <div className="px-10">
-      <section
-        id="Products"
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-10 mb-5 max-w-[1800px] mx-auto w-full"
-      >
-        {filteredData.map((ele) => (
-          <div
-            key={ele._id}
-            className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 border border-gray-100 w-full relative"
-          >
-            {/* Heart Icon */}
-            <button
-              className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white shadow-md"
-              title="Add to Wishlist"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.8}
-                stroke="red"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.015-4.5-4.5-4.5-1.74 0-3.245 1.004-4 2.45-.755-1.446-2.26-2.45-4-2.45C6.015 3.75 4 5.765 4 8.25c0 5.25 8 9.75 8 9.75s8-4.5 8-9.75z"
-                />
-              </svg>
-            </button>
+    <div className="px-6 md:px-12 mt-6 max-w-[1800px] mx-auto">
 
-            <img
-              src={ele.image}
-              alt={ele.name}
-              className="h-60 w-full object-cover"
+      {/* Mobile filter toggle button */}
+      <div className="flex items-center justify-between mb-4 md:hidden">
+        <p className="text-sm text-gray-600">
+          Showing all {filteredData.length} results
+        </p>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-2 border border-gray-300 rounded hover:bg-gray-100"
+        >
+          ☰ Filters
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        
+        {/* LEFT SIDEBAR */}
+        <aside
+          className={`col-span-1 space-y-6 bg-white p-4 rounded shadow-md md:shadow-none md:p-0 
+            md:block ${sidebarOpen ? "block" : "hidden"}`}
+        >
+          {/* Price Filter */}
+          <div>
+            <h3 className="font-semibold mb-2">Price</h3>
+            <input
+              type="range"
+              min="0"
+              max="1000"
+              defaultValue="500"
+              className="w-full"
             />
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>₹0</span>
+              <span>₹1000</span>
+            </div>
+          </div>
 
-            <div className="p-4 flex flex-col h-full">
-              <span className="text-gray-500 uppercase text-xs mb-1 tracking-wide">
-                {ele.description}
-              </span>
-              <h3 className="text-lg font-semibold text-gray-900 truncate capitalize">
-                {ele.name}
-              </h3>
+          {/* Checkboxes */}
+          <div>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="accent-purple-600" /> Featured
+              products
+            </label>
+            <label className="flex items-center gap-2 mt-2">
+              <input type="checkbox" className="accent-purple-600" /> In stock
+            </label>
+          </div>
 
-              {/* Sizes for clothes */}
-              {ele.category?.toLowerCase() === "clothes" && (
-                <div className="flex gap-2 mt-3">
-                  {["S", "M", "L", "XL"].map((size) => (
-                    <span
-                      key={size}
-                      onClick={() => handleSizeSelect(ele._id, size)}
-                      className={`w-8 h-8 flex items-center justify-center rounded-full border text-sm font-medium cursor-pointer transition-colors ${
-                        selectedSizes[ele._id] === size
-                          ? "bg-green-500 text-white border-green-500"
-                          : "border-gray-300 text-gray-700 hover:bg-green-100 hover:border-green-400"
-                      }`}
-                    >
-                      {size}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex items-center mt-3">
-                <p className="text-lg font-bold text-green-600">₹{ele.price}</p>
-                <del className="ml-2 text-gray-400 text-sm">₹199</del>
-
-                <button
-                  onClick={() => addToCart(ele)}
-                  className="ml-auto p-2 rounded-full bg-green-100 hover:bg-green-200 text-green-600 transition-colors duration-200"
-                  title="Add to Cart"
+          {/* Categories */}
+          <div>
+            <h3 className="font-semibold mb-2">Categories</h3>
+            <ul className="space-y-1 text-gray-700 text-sm cursor-pointer">
+              {[
+                { label: "All", value: "" },
+                { label: "Bags", value: "Bags" },
+                { label: "Bottle", value: "Bottle" },
+                { label: "Calendars", value: "Calendars" },
+                { label: "Combo", value: "Combo" },
+                { label: "Flowers", value: "Flowers" },
+                { label: "Keychain", value: "Keychain" },
+                { label: "Lamp", value: "Lamp" },
+                { label: "Mugs", value: "Mugs" },
+                { label: "Name Plates", value: "Name Plates" },
+                { label: "Photo Frames", value: "Photo Frames" },
+                { label: "Printed Cushion", value: "Printed Cushion" },
+              ].map((cat) => (
+                <li
+                  key={cat.label}
+                  onClick={() => setSelectedCategory(cat.value)}
+                  className={`hover:text-purple-600 ${selectedCategory === cat.value
+                    ? "font-semibold text-purple-700"
+                    : ""
+                    }`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={20}
-                    height={20}
-                    fill="currentColor"
-                    className="bi bi-bag-plus"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"
-                    />
-                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                  </svg>
+                  {cat.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+
+        {/* RIGHT CONTENT */}
+        <main className="col-span-3">
+          {/* Sorting + View Toggle */}
+          <div className="hidden md:flex items-center justify-between mb-6">
+            <p className="text-sm text-gray-600">
+              Showing all {filteredData.length} results
+            </p>
+            <div className="flex items-center gap-4">
+              <select className="border border-gray-300 text-sm rounded px-2 py-1">
+                <option>Default sorting</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+              </select>
+              <div className="flex gap-2">
+                <button className="p-1 border border-gray-300 rounded hover:bg-gray-100">
+                  ⬜⬜
+                </button>
+                <button className="p-1 border border-gray-300 rounded hover:bg-gray-100">
+                  📄
                 </button>
               </div>
             </div>
           </div>
-        ))}
-      </section>
+
+          {/* PRODUCT GRID */}
+          {filteredData.length === 0 ? (
+            <div className="text-center py-20 text-gray-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="mx-auto mb-4 h-12 w-12 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m2 8H7a2 2 0 01-2-2V7a2 2 0 012-2h4l2-2h4a2 2 0 012 2v14a2 2 0 01-2 2z" />
+              </svg>
+              <p className="text-lg font-medium">No products found</p>
+              <p className="text-sm text-gray-400">
+                Try adjusting your search or selecting another category.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredData.map((ele) => (
+                <div
+                  key={ele._id}
+                  className="border border-gray-200 rounded overflow-hidden bg-white"
+                >
+                  <img
+                    src={ele.image}
+                    alt={ele.name}
+                    className="h-60 w-full object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-sm font-medium text-gray-900 mb-1">
+                      {ele.name}
+                    </h3>
+                    <p className="text-purple-700 font-semibold text-base">
+                      ₹{ele.price}
+                    </p>
+
+                    {/* Sizes */}
+                    {ele.category?.toLowerCase() === "clothes" && (
+                      <div className="flex gap-2 mt-2">
+                        {["S", "M", "L", "XL"].map((size) => (
+                          <span
+                            key={size}
+                            onClick={() => handleSizeSelect(ele._id, size)}
+                            className={`w-8 h-8 flex items-center justify-center rounded-full border text-xs font-medium cursor-pointer ${selectedSizes[ele._id] === size
+                                ? "bg-purple-600 text-white border-purple-600"
+                                : "border-gray-300 hover:bg-purple-100"
+                              }`}
+                          >
+                            {size}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Add to cart */}
+                    <button
+                      onClick={() => addToCart(ele)}
+                      className="mt-4 w-full py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
+                    >
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 }

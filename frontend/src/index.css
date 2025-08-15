@@ -1,6 +1,7 @@
 @import "tailwindcss";
 body{
     font-family:'Times New Roman', Times, serif;
+    overflow-x: hidden;
 }
 nav{
     font-weight: bold;

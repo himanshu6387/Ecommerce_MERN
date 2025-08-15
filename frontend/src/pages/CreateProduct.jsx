@@ -118,14 +118,27 @@ const CreateProduct = () => {
             </select>
 
             {/* ✅ Category Input */}
-            <input
-              type="text"
+            {/* ✅ Category Select */}
+            <select
               name="category"
-              placeholder="Category (e.g., Electronics, Clothing)"
               className="w-full p-3 rounded bg-black text-white"
               value={form.category}
               onChange={handleChange}
-            />
+            >
+              <option value="">Select Category</option>
+              <option value="Bags">Bags</option>
+              <option value="Bottle">Bottle</option>
+              <option value="Calendars">Calendars</option>
+              <option value="Combo">Combo</option>
+              <option value="Flowers">Flowers</option>
+              <option value="Keychain">Keychain</option>
+              <option value="Lamp">Lamp</option>
+              <option value="Mugs">Mugs</option>
+              <option value="Name Plates">Name Plates</option>
+              <option value="Photo Frames">Photo Frames</option>
+              <option value="Printed Cushion">Printed Cushion</option>
+            </select>
+
 
             <input
               type="file"

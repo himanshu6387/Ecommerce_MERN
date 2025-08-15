@@ -1,61 +1,89 @@
 import React from "react";
 
-const About=()=>{
+const About = () => {
   return (
-    <div className="py-16 bg-gray-50">
-      <div className="flex flex-col lg:flex-row bg-white rounded-lg shadow-2xl border-1 border-gray-300 overflow-hidden mx-auto max-w-6xl">
+    <section className="bg-gray-50 py-20">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
         
-        {/* Left Side Image */}
-        <div
-          className="lg:w-1/2 bg-cover bg-center min-h-[300px]"
-          style={{
-            backgroundImage:
-              "url('https://img.freepik.com/free-vector/teamwork-concept-landing-page_52683-20164.jpg?t=st=1755154254~exp=1755157854~hmac=2a6d6ea1e2c56d389c9930ad2e43343936d384fb4567e49026ed6eb0e603df27&w=1480')"
-          }}
-        ></div>
-
-        {/* Right Side Content */}
-        <div className="w-full lg:w-1/2 p-8 flex flex-col justify-center">
-          <h2 className="text-4xl font-extrabold text-gray-800 mb-4">About Us</h2>
-          <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-            At <span className="font-semibold text-gray-800">BrandName</span>, we believe business is about more than products — it’s about people.  
-            Since day one, our mission has been to create meaningful solutions that simplify lives, inspire innovation, and make our customers smile.
+        {/* Heading */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">About <span className="text-purple-600">Gifty</span></h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            We craft products and experiences that make life simpler, smarter, and more enjoyable.  
+            Our passion is turning bold ideas into solutions that inspire and connect people.
           </p>
-          <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-            Whether you’re a first-time visitor or a long-term client, our team is here to support you every step of the way.  
-            We focus on quality, trust, and lasting relationships — because we know that’s what truly matters.
-          </p>
+        </div>
 
-          {/* Stats Section */}
-          <div className="grid grid-cols-3 gap-6 text-center mt-8">
-            <div>
-              <h3 className="text-3xl font-bold text-gray-800">10+</h3>
-              <p className="text-sm text-gray-500">Years of Excellence</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-gray-800">500+</h3>
-              <p className="text-sm text-gray-500">Happy Clients</p>
-            </div>
-            <div>
-              <h3 className="text-3xl font-bold text-gray-800">24/7</h3>
-              <p className="text-sm text-gray-500">Customer Support</p>
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          {/* Image */}
+          <div className="relative">
+            <img
+              src="https://img.freepik.com/free-photo/business-team-working-together-office_1303-18960.jpg"
+              alt="Our Team"
+              className="rounded-lg shadow-lg object-cover"
+            />
+            <div className="absolute -bottom-6 -left-6 bg-purple-600 text-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-3xl font-bold">10+</h3>
+              <p className="text-sm">Years of Excellence</p>
             </div>
           </div>
 
-          {/* Call to Action */}
-          <div className="mt-10">
-            <a
-              href="/contact"
-              className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg shadow hover:bg-gray-700 transition"
-            >
-              Get in Touch
-            </a>
+          {/* Text Content */}
+          <div>
+            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Our Story</h3>
+            <p className="text-gray-600 mb-4">
+              Founded with a vision to make quality accessible to everyone, <strong>BrandName</strong> has grown into a trusted name in our industry.  
+              We combine innovation with care, ensuring that every product we deliver meets the highest standards.
+            </p>
+            <p className="text-gray-600 mb-6">
+              Our team works tirelessly to understand your needs, adapt to changing trends, and stay ahead with creative solutions.  
+              Whether you're a first-time customer or a long-time partner, we aim to make every interaction exceptional.
+            </p>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6">
+              <div className="bg-white p-4 rounded-lg shadow text-center">
+                <h4 className="text-2xl font-bold text-purple-600">500+</h4>
+                <p className="text-sm text-gray-500">Happy Clients</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow text-center">
+                <h4 className="text-2xl font-bold text-purple-600">50+</h4>
+                <p className="text-sm text-gray-500">Dedicated Experts</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow text-center">
+                <h4 className="text-2xl font-bold text-purple-600">24/7</h4>
+                <p className="text-sm text-gray-500">Support Availability</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Values Section */}
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-gray-800 mb-2">Quality First</h4>
+            <p className="text-gray-600 text-sm">
+              Every product is crafted with attention to detail and tested for excellence.
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-gray-800 mb-2">Innovation Driven</h4>
+            <p className="text-gray-600 text-sm">
+              We constantly explore new ideas to bring fresh solutions to our customers.
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+            <h4 className="text-xl font-semibold text-gray-800 mb-2">People Focused</h4>
+            <p className="text-gray-600 text-sm">
+              Building strong, lasting relationships is at the heart of what we do.
+            </p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
-}
+};
 
-
-export default About
+export default About;

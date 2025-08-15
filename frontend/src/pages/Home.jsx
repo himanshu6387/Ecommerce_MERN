@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import UserDashboard from './UserDashboard';
 import Footer from './Footer';
 import { AuthContext } from '../context/AuthContext';
+import Carousel from './Carousel';
+import PopularCategories from './PopularCategories';
 
 const Home = () => {
 
@@ -11,6 +13,8 @@ const Home = () => {
 
     return (
         <>
+
+        <Carousel/>
             {/* Hero Section */}
             <section className="text-center py-10 bg-gray-50">
                 <div className="max-w-6xl mx-auto px-4">
@@ -19,7 +23,7 @@ const Home = () => {
                     </span>
 
                     <h1 className="text-3xl sm:text-4xl font-bold mb-4 mt-4">
-                        Search, Buy & Enjoy Your <span className="text-blue-600">Favorite Products</span>
+                    Buy & Enjoy Your <span className="text-blue-600">Favorite Products</span>
                     </h1>
 
                     <p className="text-gray-600 mb-6">
@@ -27,62 +31,14 @@ const Home = () => {
                         <br />
                         Shop securely and get them delivered to your doorstep.
                     </p>
-
-                    {/* Search Box */}
-                    <div className="flex justify-center mb-6">
-                        <div className="flex w-full max-w-xl rounded-full overflow-hidden shadow">
-                            <input
-                                type="text"
-                                placeholder="Search products..."
-                                className="flex-grow px-5 py-3 outline-none"
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                            <button className="bg-blue-600 text-white px-5 flex items-center justify-center">
-                                <FaSearch />
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Product Categories */}
-                    <div className="flex justify-center flex-wrap gap-3 mb-8">
-                        <span className="px-5 py-2 border border-gray-400 text-gray-600 rounded-full cursor-pointer hover:bg-gray-100">
-                            Electronics
-                        </span>
-                        <span className="px-5 py-2 border border-gray-400 text-gray-600 rounded-full cursor-pointer hover:bg-gray-100">
-                            Fashion
-                        </span>
-                        <span className="px-5 py-2 border border-gray-400 text-gray-600 rounded-full cursor-pointer hover:bg-gray-100">
-                            Home & Kitchen
-                        </span>
-                    </div>
-
-                    {/* Login Buttons */}
-                    {
-                        !user ?
-                            <>
-                                <div className="flex justify-center gap-4">
-                                    <Link
-                                        to="/login"
-                                        className="px-6 py-2 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50"
-                                    >
-                                        Login as Customer
-                                    </Link>
-                                    <Link
-                                        to="/login"
-                                        className="px-6 py-2 border border-green-600 text-green-600 rounded-full hover:bg-green-50"
-                                    >
-                                        Login as Seller
-                                    </Link>
-                                </div>
-                            </> :
-                            <>
-                            </>
-                    }
                 </div>
             </section>
 
             {/* Card Section Dynamically */}
             <UserDashboard />
+
+
+            <PopularCategories/>
 
             {/* Why Us Section */}
             <main className="mt-12">
@@ -133,8 +89,12 @@ const Home = () => {
                                 </p>
                             </div>
                         </div>
+
+                       
                     </section>
+                    
                 </div>
+              
             </main>
             <Footer />
         </>

@@ -13,12 +13,15 @@ import Navbar from './pages/Navbar';
 import {Toaster} from 'react-hot-toast'
 import Contact from './pages/Contact';
 import About from './pages/About';
+import Carousel from './pages/Carousel';
+import AboveHeaderSection from './components/AboveHeaderSection';
+import PopularCategories from './pages/PopularCategories';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
+        <AboveHeaderSection/>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
@@ -30,6 +33,8 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/carousel" element={<Carousel />} />
+          <Route path="/categories" element={<PopularCategories/>} />
         </Routes>
         <Toaster/>
       </BrowserRouter>
