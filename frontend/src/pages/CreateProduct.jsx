@@ -1,6 +1,3 @@
-Now i want when click on bags then only bag should display when click on bottle then bottle when click lamp,mugs,name plates like this should display so what should i do at the time of createProduct im adding category what should I do
-
-make it filter logic when click on these all things
 import React, { useState } from 'react';
 import API from '../services/api';
 import toast from 'react-hot-toast';
