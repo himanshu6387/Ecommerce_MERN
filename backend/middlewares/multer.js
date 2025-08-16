@@ -1,16 +1,31 @@
-const multer = require('multer')
-const path = require('path')
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
-const storage = multer.diskStorage({});
-
-const fileFilter = (req,file,cb)=>{
-   const ext = path.extname(file.originalname)
-   if(ext !== '.jpg' && ext !== '.jpeg' && ext != '.png'){
-    return cb(new Error('Only images are allowed'),false);
-   }
-   cb(null,true)
+// ensure uploads folder exists
+const uploadPath = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath);
 }
 
-const upload = multer({storage,fileFilter})
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  },
+});
 
-module.exports = upload
+const fileFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png" && ext !== ".webp") {
+    return cb(new Error("Only images are allowed"), false);
+  }
+  cb(null, true);
+};
+
+const upload = multer({ storage, fileFilter });
+
+module.exports = upload;

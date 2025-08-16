@@ -21,14 +21,18 @@ export default function PopularCategories({ onCategorySelect }) {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 4 } },
+      { breakpoint: 1280, settings: { slidesToShow: 4 } },
+      { breakpoint: 1024, settings: { slidesToShow: 3 } },
       { breakpoint: 768, settings: { slidesToShow: 2 } },
+      { breakpoint: 480, settings: { slidesToShow: 1 } }, // ✅ Mobile phones
     ],
   };
 
   return (
     <div className="my-8 px-4 relative mt-20">
-      <h2 className="text-2xl font-bold mb-4 ml-10">Popular Categories</h2>
+      <h2 className="text-2xl font-bold mb-4 ml-2 sm:ml-10">
+        Popular Categories
+      </h2>
       <Slider {...settings}>
         {categories.map((cat) => (
           <div
@@ -36,15 +40,16 @@ export default function PopularCategories({ onCategorySelect }) {
             onClick={() => onCategorySelect(cat.key)}
             className="cursor-pointer text-center"
           >
-            <div className="w-50 h-50 mx-auto rounded-full overflow-hidden border border-gray-200">
+            <div className="w-28 h-28 sm:w-36 sm:h-36 mx-auto rounded-full overflow-hidden border border-gray-200">
               <img
                 src={cat.img}
                 alt={cat.name}
                 className="w-full h-full object-cover"
               />
             </div>
-            <p className="mt-2 font-semibold">{cat.name}</p>
-            {/* <p className="text-sm text-gray-500">{cat.items} items</p> */}
+            <p className="mt-2 font-semibold text-sm sm:text-base">
+              {cat.name}
+            </p>
           </div>
         ))}
       </Slider>
@@ -57,10 +62,17 @@ function SampleNextArrow(props) {
   return (
     <div
       className={`${className} bg-purple-700 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-purple-800 transition`}
-      style={{ ...style, display: "flex", right: "-20px", width: "35px", height: "35px", zIndex: 2 }}
+      style={{
+        ...style,
+        display: "flex",
+        right: "-10px",
+        width: "30px",
+        height: "30px",
+        zIndex: 2,
+      }}
       onClick={onClick}
     >
-      <FaChevronRight size={16} color="purple" />
+      <FaChevronRight size={18} color="purple" />
     </div>
   );
 }
@@ -70,10 +82,17 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={`${className} bg-purple-700 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-purple-800 transition`}
-      style={{ ...style, display: "flex", left: "-20px", width: "35px", height: "35px", zIndex: 2 }}
+      style={{
+        ...style,
+        display: "flex",
+        left: "-10px",
+        width: "30px",
+        height: "30px",
+        zIndex: 2,
+      }}
       onClick={onClick}
     >
-      <FaChevronLeft size={20} color="purple"/>
+      <FaChevronLeft size={18} color="purple" />
     </div>
   );
 }

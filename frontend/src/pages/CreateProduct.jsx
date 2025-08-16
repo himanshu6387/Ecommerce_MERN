@@ -22,36 +22,51 @@ const CreateProduct = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!form.name || !form.price || !form.stock || !form.category) {
-      toast.error('Name, Price, Stock, and Category are required.');
+  e.preventDefault();
+
+  if (!form.name || !form.price || !form.stock || !form.category) {
+    toast.error('Name, Price, Stock, and Category are required.');
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('token'); // ✅ get admin token
+    console.log(token)
+    if (!token) {
+      toast.error('You must be logged in as admin.');
       return;
     }
 
-    try {
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
-      });
+    const formData = new FormData();
+    formData.append('name', form.name);
+    formData.append('price', Number(form.price));
+    formData.append('description', form.description);
+    formData.append('stock', Number(form.stock));
+    formData.append('category', form.category);
+    formData.append('image', form.image);
 
-      await API.post('/products', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+    await API.post('/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`, // send token
+      },
+    });
 
-      toast.success('Product created successfully!');
-      setForm({
-        name: '',
-        price: '',
-        description: '',
-        stock: '',
-        category: '',
-        image: null,
-      });
-    } catch (err) {
-      toast.error('Something went wrong while adding the product.');
-      console.error(err);
-    }
-  };
+    toast.success('Product created successfully!');
+    setForm({
+      name: '',
+      price: '',
+      description: '',
+      stock: '',
+      category: '',
+      image: null,
+    });
+  } catch (err) {
+    toast.error('Something went wrong while adding the product.');
+    console.error('Frontend submit error:', err.response?.data || err);
+  }
+};
+
 
   return (
     <section className="min-h-screen flex items-stretch text-white">
@@ -118,14 +133,27 @@ const CreateProduct = () => {
             </select>
 
             {/* ✅ Category Input */}
-            <input
-              type="text"
+            {/* ✅ Category Select */}
+            <select
               name="category"
-              placeholder="Category (e.g., Electronics, Clothing)"
               className="w-full p-3 rounded bg-black text-white"
               value={form.category}
               onChange={handleChange}
-            />
+            >
+              <option value="">Select Category</option>
+              <option value="Bags">Bags</option>
+              <option value="Bottle">Bottle</option>
+              <option value="Calendars">Calendars</option>
+              <option value="Combo">Combo</option>
+              <option value="Flowers">Flowers</option>
+              <option value="Keychain">Keychain</option>
+              <option value="Lamp">Lamp</option>
+              <option value="Mugs">Mugs</option>
+              <option value="Name Plates">Name Plates</option>
+              <option value="Photo Frames">Photo Frames</option>
+              <option value="Printed Cushion">Printed Cushion</option>
+            </select>
+
 
             <input
               type="file"
