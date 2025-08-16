@@ -15,24 +15,6 @@ const Home = () => {
         <>
 
         <Carousel/>
-            {/* Hero Section */}
-            <section className="text-center py-10 bg-gray-50">
-                <div className="max-w-6xl mx-auto px-4">
-                    <span className="inline-block px-3 py-1 mb-4 text-red-500 border border-red-500 rounded-full text-sm font-medium">
-                        No. 1 Online Shopping Platform
-                    </span>
-
-                    <h1 className="text-3xl sm:text-4xl font-bold mb-4 mt-4">
-                    Buy & Enjoy Your <span className="text-blue-600">Favorite Products</span>
-                    </h1>
-
-                    <p className="text-gray-600 mb-6">
-                        Discover a wide range of products at unbeatable prices.
-                        <br />
-                        Shop securely and get them delivered to your doorstep.
-                    </p>
-                </div>
-            </section>
 
             {/* Card Section Dynamically */}
             <UserDashboard />
