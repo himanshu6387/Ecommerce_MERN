@@ -16,6 +16,7 @@ import About from './pages/About';
 import Carousel from './pages/Carousel';
 import AboveHeaderSection from './components/AboveHeaderSection';
 import PopularCategories from './pages/PopularCategories';
+import Wishlist from './pages/Wishlist';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/carousel" element={<Carousel />} />
           <Route path="/categories" element={<PopularCategories/>} />
+          <Route path="/wishlist" element={<Wishlist/>} />
         </Routes>
         <Toaster/>
       </BrowserRouter>

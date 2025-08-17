@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import Slider from "react-slick";
+import { AuthContext } from "../context/AuthContext";
 
 function SimpleSlider() {
   const settings = {
@@ -10,9 +11,13 @@ function SimpleSlider() {
     slidesToScroll: 1,
   };
 
+  const {showCarousel} = useContext(AuthContext)
+  
+
   return (
     <div className="slider-container">
-      <Slider {...settings}>
+      {showCarousel && (
+        <Slider {...settings}>
         {[
           "https://img.freepik.com/free-photo/cyber-monday-shopping-sales_23-2148688502.jpg?w=2000",
           "https://img.freepik.com/free-psd/3d-rendering-ecommerce-background_23-2151386703.jpg?w=2000",
@@ -29,6 +34,7 @@ function SimpleSlider() {
           </div>
         ))}
       </Slider>
+      )}
     </div>
   );
 }

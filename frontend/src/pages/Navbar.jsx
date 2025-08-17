@@ -4,26 +4,14 @@ import { AuthContext } from "../context/AuthContext";
 import API from "../services/api";
 import { FaUser, FaHeart, FaShoppingCart, FaBars, FaSearch } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
+import logo from '../assets/logo.png'
 
 const Navbar = () => {
-  const { user, setUser, setSearch } = useContext(AuthContext);
-  const [cartCount, setCartCount] = useState(0);
+  const { user, setUser, setSearch, cartCount,wishlist } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const fetchCartCount = async () => {
-    try {
-      const res = await API.get("/cart");
-      setCartCount(res.data.cart?.items?.length || 0);
-    } catch (err) {
-      console.error("Failed to load cart", err);
-      setCartCount(0);
-    }
-  };
 
-  useEffect(() => {
-    if (user) fetchCartCount();
-  }, [user]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -39,7 +27,7 @@ const Navbar = () => {
         {/* Left - Logo & Hamburger */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center">
-            <img width={70} src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/7915648/ecommerce-icon-md.png" alt="" />
+            <img width={90} style={{borderRadius:'50%'}} src={logo} alt="" />
           </Link>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -92,7 +80,10 @@ const Navbar = () => {
                   <span>Account</span>
                   <br />
                   <Link to="/login" className="hover:text-purple-700">
-                    Login/Register
+                    Login
+                  </Link>
+                  <Link to="/signup" className="hover:text-purple-700">
+                    /Register
                   </Link>
                 </>
               )}
@@ -103,7 +94,7 @@ const Navbar = () => {
           <Link to="/wishlist" className="relative">
             <span className=" bi bi-heart text-2xl text-purple-800"></span>
             <span className="absolute -top-2 -right-2 bg-yellow-400 text-xs font-bold px-1 rounded">
-              0
+              {wishlist.length || 0}
             </span>
           </Link>
 
@@ -130,6 +121,7 @@ const Navbar = () => {
               type="text"
               placeholder="Search products..."
               className="flex-1 px-3 outline-none"
+              onChange={(e)=>setSearch(e.target.value)}
             />
             <button className="bg-purple-700 text-white px-4 flex items-center justify-center">
               <FaSearch />

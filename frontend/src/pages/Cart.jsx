@@ -30,12 +30,13 @@ export default function Cart() {
       await API.delete(`/cart/${productId}`);
       setCart(prevCart => ({
         ...prevCart,
-        items: prevCart.items.filter(item => item.productId._id !== productId)
+        items: prevCart.items.filter(item => item.productId && item.productId._id !== productId)
       }));
     } catch (err) {
       console.error("Error removing from cart:", err);
     }
   };
+
 
   const handleCheckout = async () => {
     if (!email || !mobile || !address) {
@@ -152,7 +153,12 @@ export default function Cart() {
                   <div className="flex items-center justify-between pt-5">
                     <div className="flex items-center">
                       <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p>
-                      <button className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer" onClick={() => handleRemove(item.productId._id)}>Remove</button>
+                      <button
+                        className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer"
+                        onClick={() => handleRemove(product?._id)}
+                      >
+                        Remove
+                      </button>
                     </div>
                     <p className="text-base font-black leading-none text-gray-800">
                       ₹{product.price * item.quantity}

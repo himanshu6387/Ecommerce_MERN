@@ -8,10 +8,10 @@ export default function Login() {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [data, setData] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false); // 🔹 loading state
+  const [loading, setLoading] = useState(false);
 
   const loginHandler = async () => {
-    setLoading(true); // start loader
+    setLoading(true);
     try {
       const res = await API.post('/auth/login', data);
       localStorage.setItem('token', res.data.token);
@@ -27,32 +27,36 @@ export default function Login() {
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed');
     } finally {
-      setLoading(false); // stop loader
+      setLoading(false);
     }
   };
 
   return (
-    <div className="py-16">
-      <div className="flex bg-white rounded-lg shadow-2xl overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+    <div className="py-16 relative">
+      {/* 🔹 Overlay Loader with GIF */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center flex-col bg-opacity-70 z-50">
+          <img
+            src="https://vmsmobile.azurewebsites.net/images/Spinner-3.gif"
+            alt="Loading..."
+            className="w-16 h-16"
+          />
+          <p className=' text-center text-green-500 mt-2 text-xl font-bold bg-white p-3 rounded-md text-shadow-amber-300'>Logging...</p>
+        </div>
+      )}
+
+      <div className="flex bg-white rounded-lg shadow-2xl overflow-hidden mx-auto max-w-sm lg:max-w-4xl relative z-10">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover"
           style={{
             backgroundImage:
-              "url('https://img.freepik.com/free-photo/showing-cart-trolley-shopping-online-sign-graphic_53876-133967.jpg?t=st=1753682640~exp=1753686240~hmac=8ef9c7d2f5efaa65fa335c8446c29e5369a81811a2579d0568015dc0b985197c&w=1380')"
+              "url('https://img.freepik.com/free-photo/showing-cart-trolley-shopping-online-sign-graphic_53876-133967.jpg')"
           }}
         ></div>
 
         <div className="w-full p-8 lg:w-1/2">
           <h2 className="text-2xl font-semibold text-gray-700 text-center">Brand</h2>
           <p className="text-xl text-gray-600 text-center">Welcome back!</p>
-
-          {/* --- your Google button remains same --- */}
-
-          <div className="mt-4 flex items-center justify-between">
-            <span className="border-b w-1/5 lg:w-1/4"></span>
-            <span className="text-xs text-center text-gray-500 uppercase">or login with email</span>
-            <span className="border-b w-1/5 lg:w-1/4"></span>
-          </div>
 
           {/* Email */}
           <div className="mt-4">
@@ -84,32 +88,9 @@ export default function Login() {
             <button
               onClick={loginHandler}
               disabled={loading}
-              className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600 flex justify-center items-center"
+              className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
             >
-              {loading ? (
-                <svg
-                  className="animate-spin h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8H4z"
-                  ></path>
-                </svg>
-              ) : (
-                "Login"
-              )}
+              Login
             </button>
           </div>
 

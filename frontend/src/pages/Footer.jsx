@@ -33,7 +33,7 @@ const Footer = () => {
         {/* Logo & About */}
         <div className="md:col-span-2">
           <h2 className="text-3xl font-bold flex items-center">
-            <span className="text-yellow-300 mr-1">gifty</span>
+            <span className="text-yellow-300 mr-1 font-serif">allMart</span>
             <span className="text-sm font-normal ml-1">GIFT SHOP</span>
           </h2>
           <p className="mt-2 text-sm">
@@ -76,11 +76,11 @@ const Footer = () => {
         <div>
           <h3 className="font-bold mb-3">Help & Guide</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:underline">Help Center</a></li>
-            <li><a href="#" className="hover:underline">How to Buy</a></li>
-            <li><a href="#" className="hover:underline">Shipping & Delivery</a></li>
-            <li><a href="#" className="hover:underline">Product Policy</a></li>
-            <li><a href="#" className="hover:underline">How to Return</a></li>
+            <li><Link to={'/contact'} className="hover:underline">Help Center</Link></li>
+            <li><Link to={'/'} className="hover:underline">How to Buy</Link></li>
+            <li><Link to={'/'} className="hover:underline">Shipping & Delivery</Link></li>
+            <li><Link to={'/'} className="hover:underline">Product Policy</Link></li>
+            <li><Link to={'/about'} className="hover:underline">How to Return</Link></li>
           </ul>
         </div>
 

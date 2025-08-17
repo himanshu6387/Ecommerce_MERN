@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [loading,setLoading] = useState(false)
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -12,6 +13,7 @@ export default function Signup() {
   });
 
   const handleSignup = async () => {
+    setLoading(true)
     try {
       await API.post('/auth/signup', form);
       toast.success('Signup successful! Please login.');
@@ -23,7 +25,21 @@ export default function Signup() {
 
   return (
     <div className="py-16">
-      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+
+      {/* 🔹 Overlay Loader with GIF */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center flex-col bg-opacity-70 z-50">
+          <img
+            src="https://vmsmobile.azurewebsites.net/images/Spinner-3.gif"
+            alt="Loading..."
+            className="w-16 h-16"
+          />
+          <p className=' text-center text-green-500 mt-2 font-bold text-xl bg-white rounded-md'>Loading...</p>
+        </div>
+      )}
+
+
+      <div className="flex bg-white rounded-lg shadow-2xl border-1 border-gray-300 overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover"
           style={{
@@ -31,6 +47,7 @@ export default function Signup() {
               "url('https://img.freepik.com/free-vector/social-media-marketing-mobile-phone-concept_23-2148431747.jpg?t=st=1753682816~exp=1753686416~hmac=3a2dce3bdfaa6e0cab16c2c290e44a08bce90638f6bf8db0a73d50b1cba73fe4&w=1380')"
           }}
         ></div>
+        
         <div className="w-full p-8 lg:w-1/2">
           <h2 className="text-2xl font-semibold text-gray-700 text-center">Brand</h2>
           <p className="text-xl text-gray-600 text-center">Create an account</p>

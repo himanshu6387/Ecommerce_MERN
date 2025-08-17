@@ -8,9 +8,26 @@ import {
 } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 import Navbar from "../pages/Navbar";
+import { Link } from "react-router-dom";
 
-const AboveHeaderSection = () => {
+const AboveHeaderSection = ({ setSelectedCategory, setCarousel }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const categories = [
+    "T-shirts",
+    "Mugs",
+    "Photo Frames",
+    "Lamp",
+    "Cushion",
+    "Flowers",
+    "Bags",
+    "Keychain",
+  ];
+
+  const handleCategoryClick = (cat) => {
+    setSelectedCategory(cat);
+    setCarousel(false); // hide carousel when a category is selected
+  };
 
   return (
     <header className="w-full">
@@ -21,7 +38,7 @@ const AboveHeaderSection = () => {
             <FaPhoneAlt className="text-yellow-300" /> +91 9876543210
           </span>
           <span className="hidden sm:flex items-center gap-1">
-            <FaEnvelope className="text-yellow-300" /> info@giftyonline.com
+            <FaEnvelope className="text-yellow-300" /> info@allmart.com
           </span>
         </div>
         <div className="flex items-center gap-3 text-lg">
@@ -45,26 +62,22 @@ const AboveHeaderSection = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden sm:flex gap-6 px-6 py-5">
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">Home</li>
-          <li className="text-yellow-400 font-semibold cursor-pointer text-lg">
-            T-shirts
-          </li>
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">Mugs</li>
           <li className="hover:text-yellow-300 cursor-pointer text-lg">
-            Photo Frames
+            <Link to={"/"}>Home</Link>
           </li>
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">Lamp</li>
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">
-            Cushion
-          </li>
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">
-            Flowers
-          </li>
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">Bags</li>
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">
-            Keychain
-          </li>
-          <li className="hover:text-yellow-300 cursor-pointer text-lg">
+          {categories.map((cat) => (
+            <li
+              key={cat}
+              className="hover:text-yellow-300 cursor-pointer text-lg"
+              onClick={() => handleCategoryClick(cat)}
+            >
+              {cat}
+            </li>
+          ))}
+          <li
+            className="hover:text-yellow-300 cursor-pointer text-lg"
+            onClick={() => handleCategoryClick("")}
+          >
             View All
           </li>
         </ul>
@@ -72,26 +85,19 @@ const AboveHeaderSection = () => {
         {/* Mobile Menu */}
         {isOpen && (
           <ul className="flex flex-col gap-4 px-6 py-4 sm:hidden bg-purple-800 absolute w-full z-50">
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">Home</li>
-            <li className="text-yellow-400 font-semibold cursor-pointer text-lg">
-              T-shirts
-            </li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">Mugs</li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">
-              Photo Frames
-            </li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">Lamp</li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">
-              Cushion
-            </li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">
-              Flowers
-            </li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">Bags</li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">
-              Keychain
-            </li>
-            <li className="hover:text-yellow-300 cursor-pointer text-lg">
+            {categories.map((cat) => (
+              <li
+                key={cat}
+                className="hover:text-yellow-300 cursor-pointer text-lg"
+                onClick={() => handleCategoryClick(cat)}
+              >
+                {cat}
+              </li>
+            ))}
+            <li
+              className="hover:text-yellow-300 cursor-pointer text-lg"
+              onClick={() => handleCategoryClick("")}
+            >
               View All
             </li>
           </ul>

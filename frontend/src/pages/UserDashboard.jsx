@@ -3,17 +3,23 @@ import API from "../services/api";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export default function UserDashboard() {
   const [products, setProducts] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(false); // NEW: For mobile sidebar toggle
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { search } = useContext(AuthContext);
+  const { search, wishlist, toggleWishlist, setCarousel } = useContext(AuthContext);
 
   useEffect(() => {
-    API.get("/products").then((res) => setProducts(res.data.products || []));
+    setLoading(true);
+    API.get("/products")
+      .then((res) => setProducts(res.data.products || []))
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   const filteredData = products.filter((p) => {
@@ -29,12 +35,10 @@ export default function UserDashboard() {
   };
 
   const addToCart = async (product) => {
-    if (
-      product.category?.toLowerCase() === "clothes" &&
-      !selectedSizes[product._id]
-    ) {
+    if (product.category?.toLowerCase() === "clothes" && !selectedSizes[product._id]) {
       toast.error("Please select a size before adding to cart");
       return;
+      
     }
 
     try {
@@ -44,13 +48,11 @@ export default function UserDashboard() {
         size: selectedSizes[product._id] || null,
       });
       toast.success(
-        `Added to cart ${selectedSizes[product._id] ? `(${selectedSizes[product._id]})` : ""
-        }`
+        `Added to cart ${selectedSizes[product._id] ? `(${selectedSizes[product._id]})` : ""}`
       );
-      navigate("/cart");
     } catch (err) {
       console.error("Error adding to cart:", err);
-      toast.error("Failed to add to cart");
+      toast.error("Please!! Login");
     }
   };
 
@@ -71,7 +73,7 @@ export default function UserDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        
+
         {/* LEFT SIDEBAR */}
         <aside
           className={`col-span-1 space-y-6 bg-white p-4 rounded shadow-md md:shadow-none md:p-0 
@@ -80,13 +82,7 @@ export default function UserDashboard() {
           {/* Price Filter */}
           <div>
             <h3 className="font-semibold mb-2">Price</h3>
-            <input
-              type="range"
-              min="0"
-              max="1000"
-              defaultValue="500"
-              className="w-full"
-            />
+            <input type="range" min="0" max="1000" defaultValue="500" className="w-full" />
             <div className="flex justify-between text-sm text-gray-500">
               <span>₹0</span>
               <span>₹1000</span>
@@ -96,8 +92,7 @@ export default function UserDashboard() {
           {/* Checkboxes */}
           <div>
             <label className="flex items-center gap-2">
-              <input type="checkbox" className="accent-purple-600" /> Featured
-              products
+              <input type="checkbox" className="accent-purple-600" /> Featured products
             </label>
             <label className="flex items-center gap-2 mt-2">
               <input type="checkbox" className="accent-purple-600" /> In stock
@@ -128,7 +123,7 @@ export default function UserDashboard() {
                   className={`hover:text-purple-600 ${selectedCategory === cat.value
                     ? "font-semibold text-purple-700"
                     : ""
-                    }`}
+                  }`}
                 >
                   {cat.label}
                 </li>
@@ -150,29 +145,21 @@ export default function UserDashboard() {
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
               </select>
-              <div className="flex gap-2">
-                <button className="p-1 border border-gray-300 rounded hover:bg-gray-100">
-                  ⬜⬜
-                </button>
-                <button className="p-1 border border-gray-300 rounded hover:bg-gray-100">
-                  📄
-                </button>
-              </div>
             </div>
           </div>
 
           {/* PRODUCT GRID */}
-          {filteredData.length === 0 ? (
+          {loading ? (
+            <div className="flex justify-center items-center flex-col py-40">
+              <img
+                src="https://vmsmobile.azurewebsites.net/images/Spinner-3.gif"
+                alt="Loading..."
+                className="h-20 w-20"
+              />
+              <p className=" text-center mt-3 text-green-600 font-semibold">Product Loading...</p>
+            </div>
+          ) : filteredData.length === 0 ? (
             <div className="text-center py-20 text-gray-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="mx-auto mb-4 h-12 w-12 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m2 8H7a2 2 0 01-2-2V7a2 2 0 012-2h4l2-2h4a2 2 0 012 2v14a2 2 0 01-2 2z" />
-              </svg>
               <p className="text-lg font-medium">No products found</p>
               <p className="text-sm text-gray-400">
                 Try adjusting your search or selecting another category.
@@ -183,22 +170,25 @@ export default function UserDashboard() {
               {filteredData.map((ele) => (
                 <div
                   key={ele._id}
-                  className="border border-gray-200 rounded overflow-hidden bg-white"
+                  className="border border-gray-200 rounded overflow-hidden bg-white relative"
                 >
-                  <img
-                    src={ele.image}
-                    alt={ele.name}
-                    className="h-60 w-full object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-sm font-medium text-gray-900 mb-1">
-                      {ele.name}
-                    </h3>
-                    <p className="text-purple-700 font-semibold text-base">
-                      ₹{ele.price}
-                    </p>
+                  {/* Heart Icon */}
+                  <button
+                    onClick={() => toggleWishlist(ele)}
+                    className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 z-10"
+                  >
+                    {wishlist.find((p) => p._id === ele._id) ? (
+                      <FaHeart className="text-red-500" />
+                    ) : (
+                      <FaRegHeart className="text-gray-400" />
+                    )}
+                  </button>
 
-                    {/* Sizes */}
+                  <img src={ele.image} alt={ele.name} className="h-60 w-full object-cover" />
+                  <div className="p-4">
+                    <h3 className="text-sm font-medium text-gray-900 mb-1">{ele.name}</h3>
+                    <p className="text-purple-700 font-semibold text-base">₹{ele.price}</p>
+
                     {ele.category?.toLowerCase() === "clothes" && (
                       <div className="flex gap-2 mt-2">
                         {["S", "M", "L", "XL"].map((size) => (
@@ -206,8 +196,8 @@ export default function UserDashboard() {
                             key={size}
                             onClick={() => handleSizeSelect(ele._id, size)}
                             className={`w-8 h-8 flex items-center justify-center rounded-full border text-xs font-medium cursor-pointer ${selectedSizes[ele._id] === size
-                                ? "bg-purple-600 text-white border-purple-600"
-                                : "border-gray-300 hover:bg-purple-100"
+                              ? "bg-purple-600 text-white border-purple-600"
+                              : "border-gray-300 hover:bg-purple-100"
                               }`}
                           >
                             {size}
@@ -216,7 +206,6 @@ export default function UserDashboard() {
                       </div>
                     )}
 
-                    {/* Add to cart */}
                     <button
                       onClick={() => addToCart(ele)}
                       className="mt-4 w-full py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
