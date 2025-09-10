@@ -109,6 +109,12 @@ export default function Cart() {
               alt="QR Code"
               className="mx-auto w-48 h-48"
             />
+
+            <p className="mt-4 text-lg font-bold text-gray-800">
+              Amount: ₹{getTotal() + 50}
+            </p>
+
+
             <button
               onClick={handleConfirmPayment}
               className="mt-6 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
