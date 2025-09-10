@@ -14,9 +14,13 @@ export default function Cart() {
 
   // ✅ Load cart from backend
   useEffect(() => {
-    API.get("/cart").then((res) => {
-      setCart(res.data.cart || { items: [] });
-    });
+    API.get("/cart")
+      .then((res) => {
+        setCart(res.data.cart || { items: [] });
+      })
+      .catch((err) => {
+        console.error("Error loading cart:", err);
+      });
   }, []);
 
   const getTotal = () =>
@@ -38,6 +42,7 @@ export default function Cart() {
       }));
     } catch (err) {
       console.error("Error removing from cart:", err);
+      toast.error("Could not remove item.");
     }
   };
 
@@ -46,13 +51,12 @@ export default function Cart() {
       toast.error("Please enter Email, Mobile, and Address before placing the order.");
       return;
     }
-    // ✅ Show QR code first
-    setShowQR(true);
+    setShowQR(true); // ✅ Show QR modal
   };
 
   const handleConfirmPayment = async () => {
     try {
-      // ✅ Send email to admin via Formspree
+      // ✅ Prepare email data for Formspree
       const emailPayload = {
         email,
         mobile,
@@ -71,16 +75,18 @@ export default function Cart() {
         body: JSON.stringify(emailPayload),
       });
 
-      // ✅ Clear cart & inputs
+      // ✅ Clear cart from backend too
+      await API.delete("/cart");
+
+      // ✅ Reset frontend state
       setCart({ items: [] });
       setEmail("");
       setMobile("");
       setAddress("");
       setShowQR(false);
 
-      // ✅ Show success
+      // ✅ Show success modal
       setShowSuccessModal(true);
-
       setTimeout(() => {
         setShowSuccessModal(false);
         navigate("/");
@@ -99,7 +105,7 @@ export default function Cart() {
           <div className="bg-white p-6 rounded-lg shadow-lg text-center w-[350px]">
             <h2 className="text-lg font-semibold mb-4">Scan to Pay</h2>
             <img
-              src="/qr-code.png" // 👉 put your QR image in public/qr-code.png
+              src="/qr-code.png" // 👉 Place qr-code.png inside public/
               alt="QR Code"
               className="mx-auto w-48 h-48"
             />
