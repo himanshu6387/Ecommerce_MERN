@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import API from "../services/api";
+import {qrimg} from '../assets/qrimg.jpg'
 
 export default function Cart() {
   const [cart, setCart] = useState({ items: [] });
@@ -105,7 +106,7 @@ export default function Cart() {
           <div className="bg-white p-6 rounded-lg shadow-lg text-center w-[350px]">
             <h2 className="text-lg font-semibold mb-4">Scan to Pay</h2>
             <img
-              src="/qr-code.png" // 👉 Place qr-code.png inside public/
+              src={qrimg} // 👉 Place qr-code.png inside public/
               alt="QR Code"
               className="mx-auto w-48 h-48"
             />
