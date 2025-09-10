@@ -46,23 +46,49 @@ export default function Cart() {
       toast.error("Please enter Email, Mobile, and Address before placing the order.");
       return;
     }
-    // ✅ Show QR code instead of direct order
+    // ✅ Show QR code first
     setShowQR(true);
   };
 
-  const handleConfirmPayment = () => {
-    // ✅ Clear cart + show success
-    setCart({ items: [] });
-    setEmail("");
-    setMobile("");
-    setAddress("");
-    setShowQR(false);
-    setShowSuccessModal(true);
+  const handleConfirmPayment = async () => {
+    try {
+      // ✅ Send email to admin via Formspree
+      const emailPayload = {
+        email,
+        mobile,
+        address,
+        message: "Order placed successfully!",
+        orderDetails: cart.items.map((item) => ({
+          name: item.productId?.name,
+          quantity: item.quantity,
+          price: item.productId?.price,
+        })),
+      };
 
-    setTimeout(() => {
-      setShowSuccessModal(false);
-      navigate("/");
-    }, 2000);
+      await fetch("https://formspree.io/f/xpwqdvpg", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(emailPayload),
+      });
+
+      // ✅ Clear cart & inputs
+      setCart({ items: [] });
+      setEmail("");
+      setMobile("");
+      setAddress("");
+      setShowQR(false);
+
+      // ✅ Show success
+      setShowSuccessModal(true);
+
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        navigate("/");
+      }, 2000);
+    } catch (err) {
+      console.error("Error confirming payment:", err);
+      toast.error("Something went wrong while placing the order.");
+    }
   };
 
   return (
