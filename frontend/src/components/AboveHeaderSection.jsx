@@ -35,10 +35,10 @@ const AboveHeaderSection = ({ setSelectedCategory, setCarousel }) => {
       <div className="bg-purple-700 text-white text-sm py-2 px-4 flex justify-between items-center">
         <div className="flex items-center gap-4 text-xs sm:text-sm">
           <span className="flex items-center gap-1">
-            <FaPhoneAlt className="text-yellow-300" /> +91 9876543210
+            <FaPhoneAlt className="text-yellow-300" /> +91 7379353250
           </span>
           <span className="hidden sm:flex items-center gap-1">
-            <FaEnvelope className="text-yellow-300" /> info@allmart.com
+            <FaEnvelope className="text-yellow-300" /> allaroundaid@gmail.com
           </span>
         </div>
         <div className="flex items-center gap-3 text-lg">

@@ -33,11 +33,11 @@ const Footer = () => {
         {/* Logo & About */}
         <div className="md:col-span-2">
           <h2 className="text-3xl font-bold flex items-center">
-            <span className="text-yellow-300 mr-1 font-serif">allMart</span>
+            <span className="text-yellow-300 mr-1 font-serif">AllAroundAid</span>
             <span className="text-sm font-normal ml-1">GIFT SHOP</span>
           </h2>
           <p className="mt-2 text-sm">
-            GIFTY – Happy Gift Store <br />
+            AllAroundAid – Happy Gift Store <br />
             Making Every Gift Uniquely Yours – Personalized with Love!
           </p>
           <div className="flex gap-4 mt-4 text-xl">
@@ -87,10 +87,10 @@ const Footer = () => {
         {/* Contact */}
         <div>
           <h3 className="font-bold mb-3">Contact</h3>
-          <p className="flex items-center gap-2 text-sm"><BsTelephoneFill /> +91 9876543210</p>
-          <p className="flex items-center gap-2 text-sm"><FaWhatsapp /> +91 9876543210</p>
-          <p className="flex items-center gap-2 text-sm"><MdEmail /> info@giftyonline.com</p>
-          <p className="flex items-center gap-2 text-sm"><MdLocationOn /> 14 SR Road, Mumbai, 400001</p>
+          <p className="flex items-center gap-2 text-sm"><BsTelephoneFill /> +91 7379353275</p>
+          <p className="flex items-center gap-2 text-sm"><FaWhatsapp /> +91 7379353250</p>
+          <p className="flex items-center gap-2 text-sm"><MdEmail /> allaroundaid@gmail.com</p>
+          <p className="flex items-center gap-2 text-sm"><MdLocationOn /> Basti Uttar Pradesh, 272002</p>
         </div>
       </div>
 
