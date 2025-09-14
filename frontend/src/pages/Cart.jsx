@@ -70,7 +70,7 @@ export default function Cart() {
         })),
       };
 
-      await fetch("https://formspree.io/f/xpwqdvpg", {
+      await fetch("https://formspree.io/f/xqadozpg", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(emailPayload),
