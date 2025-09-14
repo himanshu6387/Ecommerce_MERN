@@ -108,7 +108,7 @@ export default function Cart() {
             <img
               src={qrimg} // 👉 Place qr-code.png inside public/
               alt="QR Code"
-              className="mx-auto w-48 h-48"
+              className="mx-auto w-60 h-60"
             />
 
             <p className="mt-4 text-lg font-bold text-gray-800">
