@@ -103,12 +103,12 @@ export default function Cart() {
       {/* ✅ QR Modal */}
       {showQR && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center w-[350px]">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center w-[370px]">
             <h2 className="text-lg font-semibold mb-4">Scan to Pay</h2>
             <img
               src={qrimg} // 👉 Place qr-code.png inside public/
               alt="QR Code"
-              className="mx-auto w-60 h-60"
+              className="mx-auto w-60 h-80"
             />
 
             <p className="mt-4 text-lg font-bold text-gray-800">
