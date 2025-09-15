@@ -10,19 +10,21 @@ import CreateProduct from './pages/CreateProduct';
 import GetAllProducts from './pages/GetAllProduct';
 import Home from './pages/Home';
 import Navbar from './pages/Navbar';
-import {Toaster} from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import Contact from './pages/Contact';
 import About from './pages/About';
 import Carousel from './pages/Carousel';
 import AboveHeaderSection from './components/AboveHeaderSection';
 import PopularCategories from './pages/PopularCategories';
 import Wishlist from './pages/Wishlist';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <AboveHeaderSection/>
+        <AboveHeaderSection />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
@@ -35,10 +37,13 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/carousel" element={<Carousel />} />
-          <Route path="/categories" element={<PopularCategories/>} />
-          <Route path="/wishlist" element={<Wishlist/>} />
+          <Route path="/categories" element={<PopularCategories />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          {/* Forgot + Reset Password */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
-        <Toaster/>
+        <Toaster />
       </BrowserRouter>
     </AuthProvider>
   )
