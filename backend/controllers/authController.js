@@ -55,7 +55,7 @@ exports.forgetPassword = async (req, res) => {
         await user.save();
 
         // Reset link
-        const resetLink = `/auth/reset-password/${token}`
+        const resetLink = `https://ecommerce-mernfrontend.vercel.app/reset-password/${token}`
 
         // Send email
         await transporter.sendMail({
