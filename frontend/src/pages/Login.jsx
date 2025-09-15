@@ -8,7 +8,6 @@ export default function Login() {
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [data, setData] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false);
 
   const loginHandler = async () => {
     setLoading(true);
