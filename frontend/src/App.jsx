@@ -21,6 +21,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
 import { useContext } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
+import Abhay from './components/Abhay';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <AboveHeaderSection />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/abhay" element={<Abhay />} />
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
 

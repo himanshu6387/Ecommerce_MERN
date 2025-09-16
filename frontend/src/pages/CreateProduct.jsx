@@ -3,6 +3,7 @@ import API from '../services/api';
 import toast from 'react-hot-toast';
 
 const CreateProduct = () => {
+  const [loading,setLoading] = useState(false)
   const [form, setForm] = useState({
     name: '',
     price: '',
@@ -71,6 +72,19 @@ const CreateProduct = () => {
   return (
     <section className="min-h-screen flex items-stretch text-white">
       {/* Image Side */}
+
+      {/* 🔹 Overlay Loader with GIF */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center flex-col bg-opacity-70 z-50">
+          <img
+            src="https://vmsmobile.azurewebsites.net/images/Spinner-3.gif"
+            alt="Loading..."
+            className="w-16 h-16"
+          />
+          <p className=' text-center text-green-500 mt-2 text-xl font-bold bg-white p-3 rounded-md text-shadow-amber-300'>Loading...</p>
+        </div>
+      )}
+
       <div
         className="lg:flex w-1/2 hidden bg-cover bg-center relative items-center"
         style={{
